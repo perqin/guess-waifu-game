@@ -36,8 +36,11 @@ class _GameplayPageState extends State<GameplayPage>
       body: Column(
         children: [
           Expanded(
-            child:
-                _waifu == null ? Container() : Image(image: _waifu!.original),
+            child: _waifu == null
+                ? Container()
+                : Image(
+                    image:
+                        _isCountingDown ? _waifu!.blurred : _waifu!.original),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -127,7 +130,7 @@ class _GameplayPageState extends State<GameplayPage>
     });
     Waifu newWaifu;
     try {
-      newWaifu = await harem.pickWaifu();
+      newWaifu = await harem.pickWaifu(context);
     } catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('挑选新老婆失败，请检查涩图文件夹')));
