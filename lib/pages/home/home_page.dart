@@ -5,12 +5,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-          child: const Text('开始游戏'),
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, 'gameplay');
-          }),
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+            child: const Text('开始游戏'),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, 'gameplay');
+            }),
+      ),
     );
   }
 }

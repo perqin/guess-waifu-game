@@ -56,7 +56,7 @@ class _GameplayPageState extends State<GameplayPage>
                             decoration: const BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(4)),
-                              color: Colors.lightBlue,
+                              color: Colors.grey,
                             ),
                           ),
                         ),
