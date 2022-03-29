@@ -7,7 +7,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: ElevatedButton(
-          child: const Text('Start'),
+          child: const Text('开始游戏'),
           onPressed: () {
             Navigator.pushReplacementNamed(context, 'gameplay');
           }),

@@ -1,0 +1,1 @@
+const countdownSeconds = 30;
