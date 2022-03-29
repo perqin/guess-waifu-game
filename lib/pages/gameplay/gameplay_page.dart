@@ -140,6 +140,11 @@ class _GameplayPageState extends State<GameplayPage>
       _waifu = newWaifu;
       _animationContainer = AnimationController(
           duration: const Duration(seconds: countdownSeconds), vsync: this);
+      _animationContainer!.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _reveal();
+        }
+      });
       _animation = Tween(begin: 1.0, end: 0.0).animate(_animationContainer!);
       _animationContainer!.forward();
     });
