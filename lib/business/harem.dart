@@ -22,6 +22,7 @@ class _LoadWaifuResult {
 }
 
 _LoadWaifuResult _loadWaifu(File file) {
+  print('Working on file: ' + file.toString());
   final encoder = image.PngEncoder();
   final random = Random();
   var bytes = file.readAsBytesSync();

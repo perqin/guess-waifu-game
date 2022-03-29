@@ -130,7 +130,11 @@ class _GameplayPageState extends State<GameplayPage>
     });
     Waifu newWaifu;
     try {
+      final start = DateTime.now().millisecondsSinceEpoch;
       newWaifu = await harem.pickWaifu(context);
+      print('Loading waifu costs ' +
+          (DateTime.now().millisecondsSinceEpoch - start).toString() +
+          'ms');
     } catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('挑选新老婆失败，请检查涩图文件夹')));
