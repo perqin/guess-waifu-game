@@ -105,10 +105,11 @@ class _GameplayPageState extends State<GameplayPage>
 
   void _init() async {
     try {
+      await loadConfig();
       await harem.init();
     } catch (e) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('后宫初始化失败，请检查涩图文件夹')));
+          .showSnackBar(const SnackBar(content: Text('后宫初始化失败，请检查涩图文件夹或配置文件')));
       return;
     }
     _pickNew();
@@ -146,7 +147,7 @@ class _GameplayPageState extends State<GameplayPage>
       _isCountingDown = true;
       _waifu = newWaifu;
       _animationContainer = AnimationController(
-          duration: const Duration(seconds: countdownSeconds), vsync: this);
+          duration: Duration(seconds: countdownSeconds), vsync: this);
       _animationContainer!.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _reveal();
