@@ -53,7 +53,7 @@ _LoadWaifuResult _loadWaifu(File file) {
       image.copyInto(blurBuffer, original,
           dstX: 0, dstY: 0, srcX: x, srcY: y, srcW: w, srcH: h, blend: false);
       // Perform blurring
-      image.gaussianBlur(blurBuffer, blurRadius);
+      image.pixelate(blurBuffer, blurRadius, mode: image.PixelateMode.average);
       // Copy blurred result to blurred image
       image.copyInto(blurred, blurBuffer,
           dstX: x, dstY: y, srcX: 0, srcY: 0, srcW: w, srcH: h, blend: false);
