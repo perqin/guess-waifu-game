@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:guess_waifu_game/pages/gameplay/gameplay_page.dart';
 import 'package:guess_waifu_game/pages/home/home_page.dart';
+import 'package:window_size/window_size.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+const _appName = '看涩图猜老婆';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -12,8 +15,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    setWindowTitle(_appName);
     return MaterialApp(
-        title: 'Guess Waifu',
+        title: _appName,
         theme: ThemeData(
           // This is the theme of your application.
           //
