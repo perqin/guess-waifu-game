@@ -27,8 +27,8 @@ _LoadWaifuResult _loadWaifu(File file) {
   final random = Random();
   var bytes = file.readAsBytesSync();
   var original = image.decodeImage(bytes)!;
-  var blurred = image.Image.from(original);
-  image.gaussianBlur(blurred, min(original.width, original.height) ~/ 12);
+  var blurred = image.Image(original.width, original.height);
+  // Decide blocks
   var blurredBlocks = List.from(_blockIndices);
   List<int> originalBlocks = [];
   for (var i = 0; i < revealedBlockCount; ++i) {
@@ -36,18 +36,32 @@ _LoadWaifuResult _loadWaifu(File file) {
     originalBlocks.add(blurredBlocks[bi]);
     blurredBlocks.removeAt(bi);
   }
-  for (var i = 0; i < originalBlocks.length; ++i) {
-    // Copy block from original image into blurred image
-    var col = originalBlocks[i] % 3;
-    var row = originalBlocks[i] ~/ 3;
-    var w = original.width ~/ 3;
-    var h = original.height ~/ 3;
+  var blocks = blurredBlocks + originalBlocks;
+  var w = original.width ~/ 3;
+  var h = original.height ~/ 3;
+  final blurRadius = min(original.width, original.height) ~/ 12;
+  var blurBuffer = image.Image(w, h);
+  for (var i = 0; i < blocks.length; ++i) {
+    var col = blocks[i] % 3;
+    var row = blocks[i] ~/ 3;
     var x = col * w;
     var y = row * h;
     w = w >= original.width ? original.width - 1 : w;
     h = h >= original.height ? original.height - 1 : h;
-    image.copyInto(blurred, original,
-        dstX: x, dstY: y, srcX: x, srcY: y, srcW: w, srcH: h, blend: false);
+    if (i < revealedBlockCount) {
+      // This block need blurring
+      image.copyInto(blurBuffer, original,
+          dstX: 0, dstY: 0, srcX: x, srcY: y, srcW: w, srcH: h, blend: false);
+      // Perform blurring
+      image.gaussianBlur(blurBuffer, blurRadius);
+      // Copy blurred result to blurred image
+      image.copyInto(blurred, blurBuffer,
+          dstX: x, dstY: y, srcX: 0, srcY: 0, srcW: w, srcH: h, blend: false);
+    } else {
+      // Copy untouched
+      image.copyInto(blurred, original,
+          dstX: x, dstY: y, srcX: x, srcY: y, srcW: w, srcH: h, blend: false);
+    }
   }
   return _LoadWaifuResult(
     Uint8List.fromList(encoder.encodeImage(original)),
