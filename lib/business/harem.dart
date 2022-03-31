@@ -78,6 +78,7 @@ class Harem {
   final List<File> _unpickedList = [];
   final List<File> _pickedList = [];
   final _random = Random();
+  late Future<Waifu> _pickWaifuFastTask;
 
   init() async {
     var list = await Directory('./waifu')
@@ -87,9 +88,22 @@ class Harem {
         .takeWhile((f) => validImageExtensions.contains(extension(f.path)))
         .toList();
     _unpickedList.addAll(list);
+    // Pre-pick for better user experience
+    _pickWaifuFastTask = _pickWaifu(null);
   }
 
   Future<Waifu> pickWaifu(BuildContext context) async {
+    // _pickWaifuFastTask ??= _pickWaifu(context);
+    final task = _pickWaifuFastTask;
+    final ret = await task;
+    if (task != _pickWaifuFastTask) {
+      throw Exception('call pickWaifu in parallel is not allowed');
+    }
+    _pickWaifuFastTask = _pickWaifu(context);
+    return ret;
+  }
+
+  Future<Waifu> _pickWaifu(BuildContext? context) async {
     var index = _random.nextInt(_unpickedList.length);
     var picked = _unpickedList[index];
     _unpickedList.removeAt(index);
@@ -103,8 +117,10 @@ class Harem {
   }
 
   Future<ImageProvider> _precached(
-      ImageProvider image, BuildContext context) async {
-    await precacheImage(image, context);
+      ImageProvider image, BuildContext? context) async {
+    if (context != null) {
+      await precacheImage(image, context);
+    }
     return image;
   }
 }
