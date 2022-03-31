@@ -5,13 +5,22 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:guess_waifu_game/business/waifu.dart';
-import 'package:guess_waifu_game/config.dart';
 import 'package:image/image.dart' as image;
 import 'package:path/path.dart';
 
 var validImageExtensions = ['.png', '.jpg', '.jpeg', '.bmp'];
 
-const _blockIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+const blurredBlockCount = 5;
+const _blockPatterns = [
+  // Top-left revealed
+  [2, 5, 6, 7, 8, 0, 1, 3, 4],
+  // Top-right revealed
+  [0, 3, 6, 7, 8, 1, 2, 4, 5],
+  // Bottom-left revealed
+  [0, 1, 2, 5, 8, 3, 4, 6, 7],
+  // Bottom-right revealed
+  [0, 1, 2, 3, 6, 4, 5, 7, 8],
+];
 
 // This stores the processed and encoded image buffer.
 class _LoadWaifuResult {
@@ -32,14 +41,7 @@ _LoadWaifuResult _loadWaifu(File file) {
   }
   var blurred = image.Image(original.width, original.height);
   // Decide blocks
-  var blurredBlocks = List.from(_blockIndices);
-  List<int> originalBlocks = [];
-  for (var i = 0; i < revealedBlockCount; ++i) {
-    var bi = random.nextInt(blurredBlocks.length);
-    originalBlocks.add(blurredBlocks[bi]);
-    blurredBlocks.removeAt(bi);
-  }
-  var blocks = blurredBlocks + originalBlocks;
+  var blocks = _blockPatterns[random.nextInt(_blockPatterns.length)];
   var w = original.width ~/ 3;
   var h = original.height ~/ 3;
   final blurRadius = min(original.width, original.height) ~/ 12;
@@ -51,7 +53,7 @@ _LoadWaifuResult _loadWaifu(File file) {
     var y = row * h;
     w = w >= original.width ? original.width - 1 : w;
     h = h >= original.height ? original.height - 1 : h;
-    if (i < revealedBlockCount) {
+    if (i < blurredBlockCount) {
       // This block need blurring
       image.copyInto(blurBuffer, original,
           dstX: 0, dstY: 0, srcX: x, srcY: y, srcW: w, srcH: h, blend: false);

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 var countdownSeconds = 30;
-var revealedBlockCount = 4;
 
 Future<void> loadConfig() async {
   final f = File('config.txt');
@@ -22,12 +21,8 @@ Future<void> loadConfig() async {
         case 'countdownSeconds':
           countdownSeconds = int.parse(v);
           break;
-        case 'revealedBlockCount':
-          revealedBlockCount = int.parse(v);
-          break;
       }
     }
   }
   assert(countdownSeconds > 0);
-  assert(revealedBlockCount > 0 && revealedBlockCount < 9);
 }
