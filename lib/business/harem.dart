@@ -27,6 +27,9 @@ _LoadWaifuResult _loadWaifu(File file) {
   final random = Random();
   var bytes = file.readAsBytesSync();
   var original = image.decodeImage(bytes)!;
+  if (original.height > 1080) {
+    original = image.copyResize(original, height: 1080);
+  }
   var blurred = image.Image(original.width, original.height);
   // Decide blocks
   var blurredBlocks = List.from(_blockIndices);
