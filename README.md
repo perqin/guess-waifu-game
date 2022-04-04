@@ -1,16 +1,19 @@
 # guess_waifu_game
 
-A new Flutter project.
+A tiny game that picks your waifu randomly and blurs part of the picture for guessing.
 
-## Getting Started
+## How to build
 
-This project is a starting point for a Flutter application.
+This project is targeting desktop platform and is tested on Windows 11 x64, but should also work on Linux and macOS. Please follow the [official documentation]([https://docs.flutter.dev/desktop) to setup your development environment.
 
-A few resources to get you started if this is your first Flutter project:
+After setting up, run:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```powershell
+flutter build windows
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+to build release executable for Windows platform. The built artifacts rest under `<project directory>/build/windows/runner/Release/`.
+
+## License
+
+GPLv3.
