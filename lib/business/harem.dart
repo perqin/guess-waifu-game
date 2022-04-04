@@ -8,7 +8,7 @@ import 'package:guess_waifu_game/business/waifu.dart';
 import 'package:image/image.dart' as image;
 import 'package:path/path.dart';
 
-var validImageExtensions = ['.png', '.jpg', '.jpeg', '.bmp'];
+var validImageExtensions = ['.png', '.jpg', '.jpeg', '.bmp', '.PNG', '.JPG', '.JPEG', '.BMP'];
 
 const blurredBlockCount = 5;
 const _blockPatterns = [
